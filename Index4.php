@@ -520,20 +520,25 @@ function showContact(buttonElement) {
         })
         .then(response => response.json())
         .then(data => {
-            if (data.Body.stkCallback.ResultCode === 0) { // Success case from Safaricom API
+            if (data.error) {
+                alert("Error: " + data.error);
+            } else if (data.Body && data.Body.stkCallback && data.Body.stkCallback.ResultCode === 0) {
                 alert("Payment successful! Displaying contact information.");
                 const contactInfoElement = buttonElement.nextElementSibling;
                 contactInfoElement.style.display = 'block'; // Show the contact info
-            } else {
+            } else if (data.Body && data.Body.stkCallback) {
                 alert("Payment failed: " + data.Body.stkCallback.ResultDesc);
+            } else {
+                alert("Unexpected response format: " + JSON.stringify(data));
             }
         })
         .catch(error => {
-            console.error('Error:', error);
+            console.error('Fetch error:', error);
             alert("An error occurred. Please try again.");
         });
     }
 }
+
 
 
     </script>
