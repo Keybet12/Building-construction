@@ -509,7 +509,7 @@ document.querySelector('.toggle-btn').addEventListener('click', function() {
 });
 
 
-function showContact() {
+function showContact(buttonElement) {
     const phoneNumber = prompt("Please enter your M-Pesa number:");
     
     if (phoneNumber) {
@@ -522,18 +522,20 @@ function showContact() {
         })
         .then(response => response.json())
         .then(data => {
-            if (data.success) {
+            if (data.Body.stkCallback.ResultCode === 0) { // Success case from Safaricom API
                 alert("Payment successful! Displaying contact information.");
-                // Here, display the contact information
+                const contactInfoElement = buttonElement.nextElementSibling;
+                contactInfoElement.style.display = 'block'; // Show the contact info
             } else {
-                alert("Payment failed: " + data.errorMessage);
+                alert("Payment failed: " + data.Body.stkCallback.ResultDesc);
             }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert("An error occurred. Please try again.");
         });
     }
 }
-</script>
-
- 
 
 
     </script>
