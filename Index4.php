@@ -476,7 +476,7 @@ function showContact(buttonElement) {
     const phoneNumber = prompt("Please enter your M-Pesa number:");
     
     if (phoneNumber) {
-        fetch('https://blooming-badlands-84005-a8db784487d5.herokuapp.com/Index4.php', {
+        fetch('Index4.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
