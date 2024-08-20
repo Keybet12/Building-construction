@@ -18,14 +18,14 @@ function lipaNaMpesa($phoneNumber) {
         'PartyA' => $phoneNumber, // The user's phone number
         'PartyB' => $shortCode, // Your shortcode
         'PhoneNumber' => $phoneNumber,
-        'CallBackURL' => 'https://blooming-badlands-84005-a8db784487d5.herokuapp.com/callback.php',
+        'CallBackURL' => 'https://blooming-badlands-84005-a8db784487d5.herokuapp.com/callback_url.php',
         'AccountReference' => 'Foreman Services',
         'TransactionDesc' => 'Payment X'
     );
 
     $dataString = json_encode($data);
 
-    $ch = curl_init('https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest');
+    $ch = curl_init('https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials');
     curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:application/json', 'Authorization:Bearer '.$accessToken));
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_POST, true);
