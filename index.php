@@ -27,7 +27,7 @@ if (isset($_POST['submit'])) {
             
             echo "<script>
                     alert('Login successful!');
-                    window.location.href = 'http://localhost/ForeManServices/Index4.php';
+                    window.location.href = 'Index4.php';
                   </script>";
             exit();
         } else {
@@ -45,7 +45,7 @@ $conn->close();
 
 $clientID = '222201930065-dd34sbsahndgmj0k5le0rm4m0059o96v.apps.googleusercontent.com';
 $clientSecret = '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';
-$redirectUri = 'http://localhost/ForeManServices/Index4.php';
+$redirectUri = 'Index4.php';
 
 // create Client Request to access Google API
 $client = new Google_Client();
