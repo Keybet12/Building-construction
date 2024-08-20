@@ -1,53 +1,89 @@
 
 <?php
+if (isset($_POST['submit'])) {
+    date_default_timezone_set('Africa/Nairobi');
 
-function lipaNaMpesa($phoneNumber) {
-    $accessToken = getAccessToken();
-    $shortCode = '4629242';
-    $lipaNaMpesaOnlinePasskey = 'bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919';
-    $amount = 50;
-    $timestamp = date('YmdHis');
-    $password = base64_encode($shortCode . $lipaNaMpesaOnlinePasskey . $timestamp);
+    # Access token details
+    $consumerKey = 'cCBLUhWdLDqaGqtrZmtM2XLCo1O8KtqiNu3EJJBzQRtAzgoZ'; // Fill with your app Consumer Key
+    $consumerSecret = 'JH93cv4kUyGaxwxU5U1NMngG4kATFCklVtLba4ZVAKOSkDr6clOxztpvGSEkZ5yC'; // Fill with your app Secret
 
-    $data = array(
-        'BusinessShortCode' => $shortCode,
-        'Password' => $password,
-        'Timestamp' => $timestamp,
-        'TransactionType' => 'CustomerBuyGoodsOnline',
-        'Amount' => $amount,
-        'PartyA' => $phoneNumber, // The user's phone number
-        'PartyB' => $shortCode, // Your shortcode
-        'PhoneNumber' => $phoneNumber,
-        'CallBackURL' => 'https://blooming-badlands-84005-a8db784487d5.herokuapp.com/callback_url.php',
-        'AccountReference' => 'Foreman Services',
-        'TransactionDesc' => 'Payment X'
+    # Define variables
+    $BusinessShortCode = '4629242';
+    $Passkey = 'bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919';  
+    $PartyA = $_POST['phone']; // This is the phone number entered
+    $AccountReference = 'Foreman Services';
+    $TransactionDesc = 'Payment X';
+    $Amount = '50';
+    $Timestamp = date('YmdHis');    
+    $Password = base64_encode($BusinessShortCode.$Passkey.$Timestamp);
+
+    # Headers for access token
+    $headers = ['Content-Type:application/json; charset=utf8'];
+
+    # M-PESA endpoint URLs
+    $access_token_url = 'https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials';
+    $initiate_url = 'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest';
+
+    # Callback URL
+    $CallBackURL = 'https://blooming-badlands-84005-a8db784487d5.herokuapp.com/callback_url.php';  
+
+    # Get the access token
+    $curl = curl_init($access_token_url);
+    curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
+    curl_setopt($curl, CURLOPT_HEADER, FALSE);
+    curl_setopt($curl, CURLOPT_USERPWD, $consumerKey.':'.$consumerSecret);
+    $result = curl_exec($curl);
+    $status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+    $result = json_decode($result);
+    $access_token = $result->access_token;  
+    curl_close($curl);
+
+    # Header for STK push
+    $stkheader = ['Content-Type:application/json','Authorization:Bearer '.$access_token];
+
+    # Initiating the transaction
+    $curl = curl_init();
+    curl_setopt($curl, CURLOPT_URL, $initiate_url);
+    curl_setopt($curl, CURLOPT_HTTPHEADER, $stkheader); // Setting custom header
+
+    $curl_post_data = array(
+        'BusinessShortCode' => $BusinessShortCode,
+        'Password' => $Password,
+        'Timestamp' => $Timestamp,
+        'TransactionType' => 'CustomerPayBillOnline',
+        'Amount' => $Amount,
+        'PartyA' => $PartyA,
+        'PartyB' => $BusinessShortCode,
+        'PhoneNumber' => $PartyA,
+        'CallBackURL' => $CallBackURL,
+        'AccountReference' => $AccountReference,
+        'TransactionDesc' => $TransactionDesc
     );
 
-    $dataString = json_encode($data);
+    $data_string = json_encode($curl_post_data);
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($curl, CURLOPT_POST, true);
+    curl_setopt($curl, CURLOPT_POSTFIELDS, $data_string);
+    $curl_response = curl_exec($curl);
 
-    $ch = curl_init('https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials');
-    curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:application/json', 'Authorization:Bearer '.$accessToken));
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_POST, true);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $dataString);
-
-    $response = curl_exec($ch);
-    $http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    if (curl_errno($ch)) {
-        $error_message = 'Curl error: ' . curl_error($ch);
-        return json_encode(array('error' => $error_message));
-    } elseif ($http_status != 200) {
-        $error_message = 'HTTP error: ' . $http_status;
-        return json_encode(array('error' => $error_message, 'response' => $response));
+    if (curl_errno($curl)) {
+        $error_message = 'Curl error: ' . curl_error($curl);
+        echo json_encode(array('error' => $error_message));
+    } else {
+        $http_status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+        if ($http_status != 200) {
+            $error_message = 'HTTP error: ' . $http_status;
+            echo json_encode(array('error' => $error_message, 'response' => $curl_response));
+        } else {
+            echo $curl_response;
+        }
     }
-    curl_close($ch);
-
-    return $response;
+    curl_close($curl);
 }
-
-
-
 ?>
+
+
 
 
 <html lang="en">
@@ -474,14 +510,17 @@ document.querySelector('.toggle-btn').addEventListener('click', function() {
 
 function showContact(buttonElement) {
     const phoneNumber = prompt("Please enter your M-Pesa number:");
-    
+
     if (phoneNumber) {
         fetch('Index4.php', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/x-www-form-urlencoded'
             },
-            body: JSON.stringify({ phoneNumber: phoneNumber })
+            body: new URLSearchParams({
+                'phone': phoneNumber,
+                'submit': 'Submit' // To ensure the PHP script runs the desired logic
+            })
         })
         .then(response => response.json())
         .then(data => {
@@ -506,8 +545,6 @@ function showContact(buttonElement) {
         });
     }
 }
-
-
 
 
     </script>
