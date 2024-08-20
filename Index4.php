@@ -18,7 +18,7 @@ function lipaNaMpesa($phoneNumber) {
         'PartyA' => $phoneNumber, // The user's phone number
         'PartyB' => $shortCode, // Your shortcode
         'PhoneNumber' => $phoneNumber,
-        'CallBackURL' => 'https://blooming-badlands-84005-a8db784487d5.herokuapp.com/callback_url.php',
+        'CallBackURL' => 'https://blooming-badlands-84005-a8db784487d5.herokuapp.com/callback.php',
         'AccountReference' => 'Foreman Services',
         'TransactionDesc' => 'Payment X'
     );
