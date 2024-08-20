@@ -10,8 +10,8 @@ session_start();
 $username = isset($_SESSION['username']) ? $_SESSION['username'] : 'Guest';
 
 function getAccessToken() {
-    $consumerKey = 'iJ247FtYcvlRpza4FJhqmK2uiYpnuUuseYuOTsclA0gn4Kwh';
-    $consumerSecret = 'TWmq49HMSB0m0iXj7ycAF5AHfjKVVngtxsGTe2k5NYsquX9LAsJAFwUVqDhAtTa7';
+    $consumerKey = 'cCBLUhWdLDqaGqtrZmtM2XLCo1O8KtqiNu3EJJBzQRtAzgoZ';
+    $consumerSecret = 'JH93cv4kUyGaxwxU5U1NMngG4kATFCklVtLba4ZVAKOSkDr6clOxztpvGSEkZ5yC';
     $credentials = base64_encode($consumerKey . ':' . $consumerSecret);
 
     $ch = curl_init();
@@ -45,8 +45,8 @@ function lipaNaMpesa($phoneNumber) {
         'PartyB' => $shortCode, // Your shortcode
         'PhoneNumber' => $phoneNumber,
         'CallBackURL' => 'https://yourdomain.com/callback.php',
-        'AccountReference' => 'Test',
-        'TransactionDesc' => 'Test'
+        'AccountReference' => 'Foreman Services',
+        'TransactionDesc' => 'Payment X'
     );
 
     $dataString = json_encode($data);
@@ -513,7 +513,7 @@ function showContact() {
     const phoneNumber = prompt("Please enter your M-Pesa number:");
     
     if (phoneNumber) {
-        fetch('https://yourdomain.com/lipaNaMpesa.php', {
+        fetch('https://blooming-badlands-84005-a8db784487d5.herokuapp.com/Index4.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
