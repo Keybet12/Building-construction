@@ -1,11 +1,11 @@
 <?php
 
-$con = mysqli_connect("localhost", "root", "", "foreman");
+$con = mysqli_connect("sql5.freesqldatabase.com", "sql5726945", "UIEGnP4mm3", "sql5726945");
 if($con == false) {
     die("Connection Error". mysqli_connect_error());
 }
 
-$conn = mysqli_connect("localhost", "root", "", "constructionlgn");
+$conn = mysqli_connect("sql5.freesqldatabase.com", "sql5726945", "UIEGnP4mm3", "sql5726945");
 if($conn == false) {
     die("Connection Error". mysqli_connect_error());
 }

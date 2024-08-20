@@ -13,7 +13,7 @@ if (isset($_POST['submit']) && strlen($_POST["password"]) >= 8) {
         
         echo "<script> alert('Success! You can now Login')
         
-         window.location.href = 'http://localhost/ForeManServices/Login.php';
+         window.location.href = 'http://localhost/ForeManServices/index.php';
         
         </script>";
          

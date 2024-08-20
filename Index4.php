@@ -466,7 +466,7 @@ button {
                     <i class="far fa-question-circle"></i>
                     <span class="nav-item">Help</span>
                 </a></li>
-                <li><a href="Login.php" class="logout">
+                <li><a href="index.php" class="logout">
                     <i class="fas fa-sign-out-alt"></i>
                     <span class="nav-item">Logout</span>
                 </a></li>
