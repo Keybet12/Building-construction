@@ -1,31 +1,6 @@
 
 <?php
 
-include('connectionForeman.php');
-
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
-session_start();
-
-$username = isset($_SESSION['username']) ? $_SESSION['username'] : 'Guest';
-
-function getAccessToken() {
-    $consumerKey = 'cCBLUhWdLDqaGqtrZmtM2XLCo1O8KtqiNu3EJJBzQRtAzgoZ';
-    $consumerSecret = 'JH93cv4kUyGaxwxU5U1NMngG4kATFCklVtLba4ZVAKOSkDr6clOxztpvGSEkZ5yC';
-    $credentials = base64_encode($consumerKey . ':' . $consumerSecret);
-
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, 'https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials');
-    curl_setopt($ch, CURLOPT_HTTPHEADER, array('Authorization: Basic '.$credentials));
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    $response = curl_exec($ch);
-    curl_close($ch);
-
-    $result = json_decode($response);
-    return $result->access_token;
-}
-
 function lipaNaMpesa($phoneNumber) {
     $accessToken = getAccessToken();
     $shortCode = '4629242';
@@ -57,26 +32,19 @@ function lipaNaMpesa($phoneNumber) {
     curl_setopt($ch, CURLOPT_POSTFIELDS, $dataString);
 
     $response = curl_exec($ch);
+    $http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     if (curl_errno($ch)) {
-        return json_encode(array('error' => 'Curl error: ' . curl_error($ch)));
+        $error_message = 'Curl error: ' . curl_error($ch);
+        return json_encode(array('error' => $error_message));
+    } elseif ($http_status != 200) {
+        $error_message = 'HTTP error: ' . $http_status;
+        return json_encode(array('error' => $error_message, 'response' => $response));
     }
     curl_close($ch);
 
     return $response;
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $jsonData = file_get_contents('php://input');
-    $request = json_decode($jsonData, true);
-    $phoneNumber = $request['phoneNumber'];
-
-    if (!empty($phoneNumber)) {
-        $response = lipaNaMpesa($phoneNumber);
-        echo $response;
-    } else {
-        echo json_encode(array('error' => 'Phone number is required.'));
-    }
-}
 
 
 ?>
@@ -522,6 +490,9 @@ function showContact(buttonElement) {
         .then(data => {
             if (data.error) {
                 alert("Error: " + data.error);
+                if (data.response) {
+                    console.log("Full response:", data.response);
+                }
             } else if (data.Body && data.Body.stkCallback && data.Body.stkCallback.ResultCode === 0) {
                 alert("Payment successful! Displaying contact information.");
                 const contactInfoElement = buttonElement.nextElementSibling;
@@ -538,6 +509,7 @@ function showContact(buttonElement) {
         });
     }
 }
+
 
 
 
