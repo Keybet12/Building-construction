@@ -15,7 +15,7 @@ if (isset($_POST['submit'])) {
     $status = $_POST['status'];
     $contact = $_POST['contact'];
 
-    $query = mysqli_query($con, "INSERT INTO sql5726945 (site_photo, infrastructure, _location, workforce_needed, arrival_time, closing_time, application_status, contact) 
+    $query = mysqli_query($con, "INSERT INTO const_sites (site_photo, infrastructure, _location, workforce_needed, arrival_time, closing_time, application_status, contact) 
         VALUES ('$image', '$infrastructure', '$location', '$workforce', '$arrival', '$closing', '$status', '$contact')");
 
     if ($query) {
