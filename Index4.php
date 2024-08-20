@@ -1,7 +1,8 @@
 
 <?php
+
 include('connectionForeman.php');
- 
+
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
@@ -24,8 +25,6 @@ function getAccessToken() {
     $result = json_decode($response);
     return $result->access_token;
 }
-
-
 
 function lipaNaMpesa($phoneNumber) {
     $accessToken = getAccessToken();
@@ -58,27 +57,26 @@ function lipaNaMpesa($phoneNumber) {
     curl_setopt($ch, CURLOPT_POSTFIELDS, $dataString);
 
     $response = curl_exec($ch);
+    if (curl_errno($ch)) {
+        return json_encode(array('error' => 'Curl error: ' . curl_error($ch)));
+    }
     curl_close($ch);
 
-    return json_decode($response);
+    return $response;
 }
-
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $jsonData = file_get_contents('php://input');
-    $response = json_decode($jsonData, true);
+    $request = json_decode($jsonData, true);
+    $phoneNumber = $request['phoneNumber'];
 
-    if ($response['Body']['stkCallback']['ResultCode'] == 0) {
-        // Payment was successful
-        $contactInfo = "The contact is: 0700 XXX XXX"; // Display the actual contact information here
-        echo $contactInfo;
+    if (!empty($phoneNumber)) {
+        $response = lipaNaMpesa($phoneNumber);
+        echo $response;
     } else {
-        // Payment failed
-        echo "Payment failed. Please try again.";
+        echo json_encode(array('error' => 'Phone number is required.'));
     }
 }
-
-
 
 
 ?>
