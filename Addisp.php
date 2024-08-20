@@ -4,7 +4,7 @@ include('connectionForeman.php');
 
 if (isset($_GET['county']) && !empty($_GET['county'])) {
     $selected_county = $_GET['county'];
-    $query = "SELECT * FROM sql5726945 WHERE _location LIKE '$selected_county%'";
+    $query = "SELECT * FROM const_sites WHERE _location LIKE '$selected_county%'";
 } else {
     $query = "SELECT * FROM const_sites"; // This runs when "All counties" or the default option is selected
 }
