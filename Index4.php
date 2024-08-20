@@ -30,7 +30,7 @@ function getAccessToken() {
 function lipaNaMpesa($phoneNumber) {
     $accessToken = getAccessToken();
     $shortCode = '4629242';
-    $lipaNaMpesaOnlinePasskey = 'YOUR_PASSKEY';
+    $lipaNaMpesaOnlinePasskey = 'bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919';
     $amount = 50;
     $timestamp = date('YmdHis');
     $password = base64_encode($shortCode . $lipaNaMpesaOnlinePasskey . $timestamp);
@@ -44,7 +44,7 @@ function lipaNaMpesa($phoneNumber) {
         'PartyA' => $phoneNumber, // The user's phone number
         'PartyB' => $shortCode, // Your shortcode
         'PhoneNumber' => $phoneNumber,
-        'CallBackURL' => 'https://yourdomain.com/callback.php',
+        'CallBackURL' => 'https://blooming-badlands-84005-a8db784487d5.herokuapp.com/callback_url.php',
         'AccountReference' => 'Foreman Services',
         'TransactionDesc' => 'Payment X'
     );
