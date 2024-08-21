@@ -87,7 +87,7 @@
         <div class="media mt-3 pl-2">
                           <!--bs5 input-->
 
-            <form class="row g-3" action="Index4.php" method="POST">
+            <form class="row g-3" action="tester.php" method="POST">
                 <div class="col-12">
                   <label for="inputAddress2" class="form-label" >Phone Number</label>
                   <input type="text" class="form-control" name="phone"  placeholder="Enter Phone Number">
