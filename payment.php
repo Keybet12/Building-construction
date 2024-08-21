@@ -74,9 +74,9 @@
     <div class="container d-flex justify-content-center">
       <div class="card mt-5 px-3 py-4">
         <div class="d-flex flex-row justify-content-around">
-          <div class="mpesa"><span style= "background: rgb(9, 37, 82);">Mpesa </span></div>
-          <div><span style= "background: rgb(9, 37, 82);">Paypal</span></div>
-          <div><span style= "background: rgb(9, 37, 82);">Card</span></div>
+          <div class="mpesa" style= "background: rgb(9, 37, 82);"><span>Mpesa </span></div>
+          <div style= "background: rgb(9, 37, 82);"><span>Paypal</span></div>
+          <div style= "background: rgb(9, 37, 82);"><span>Card</span></div>
         </div>
         <div class="media mt-4 pl-2">
           <img src="1200px-M-PESA_LOGO-01.svg.png" class="mr-3" height="75" />
@@ -87,7 +87,7 @@
         <div class="media mt-3 pl-2">
                           <!--bs5 input-->
 
-            <form class="row g-3" action="tester.php" method="POST">
+            <form class="row g-3" action="Index4.php" method="POST">
                 <div class="col-12">
                   <label for="inputAddress2" class="form-label" >Phone Number</label>
                   <input type="text" class="form-control" name="phone"  placeholder="Enter Phone Number">
