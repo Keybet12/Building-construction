@@ -13,7 +13,7 @@ if (isset($_POST['submit']) && strlen($_POST["password"]) >= 8) {
         
         echo "<script> alert('Success! You can now Login')
         
-         window.location.href = 'http://blooming-badlands-84005-a8db784487d5.herokuapp.com';
+         window.location.href = 'https://immense-lowlands-22897-966ba996a796.herokuapp.com/ ';
         
         </script>";
          
