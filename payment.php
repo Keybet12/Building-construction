@@ -79,9 +79,9 @@
           <div><span>Card</span></div>
         </div>
         <div class="media mt-4 pl-2">
-          <img src="./images/1200px-M-PESA_LOGO-01.svg.png" class="mr-3" height="75" />
+          <img src="1200px-M-PESA_LOGO-01.svg.png" class="mr-3" height="75" />
           <div class="media-body">
-            <h6 class="mt-1">Enter Number</h6>
+           
           </div>
         </div>
         <div class="media mt-3 pl-2">
@@ -94,7 +94,7 @@
                 </div>
              
                 <div class="col-12">
-                  <button type="submit" class="btn btn-success" name="submit" value="submit">Pay</button>
+                  <button type="submit" class="btn btn-success" name="submit" value="submit" style= "background: navy;">Pay</button>
                 </div>
               </form>
               <!--bs5 input-->
