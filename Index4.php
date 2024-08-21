@@ -167,7 +167,7 @@ nav {
     box-shadow: 2px 2px 3px grey;
 }
 .navbar {
-    background: rgb(9, 37, 82);
+    background: transparent;
     display: flex;
     position: fixed;
     justify-content: center;
