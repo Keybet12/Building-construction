@@ -1,5 +1,6 @@
 
 <?php
+if (isset($_POST['submit'])) {
     date_default_timezone_set('Africa/Nairobi');
 
     # Access token details
@@ -9,7 +10,7 @@
     # Define variables
     $BusinessShortCode = '4629242';
     $Passkey = 'bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919';  
-    $PartyA = $_POST['phone']; // This is the phone number entered
+    $PartyA = $_POST['phone']; // This is the phone number entered by the user
     $AccountReference = 'Foreman Services';
     $TransactionDesc = 'Payment X';
     $Amount = '50';
@@ -33,7 +34,6 @@
     curl_setopt($curl, CURLOPT_HEADER, FALSE);
     curl_setopt($curl, CURLOPT_USERPWD, $consumerKey.':'.$consumerSecret);
     $result = curl_exec($curl);
-    $status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
     $result = json_decode($result);
     $access_token = $result->access_token;  
     curl_close($curl);
@@ -75,10 +75,11 @@
             $error_message = 'HTTP error: ' . $http_status;
             echo json_encode(array('error' => $error_message, 'response' => $curl_response));
         } else {
-            echo $curl_response;
+            echo $curl_response; // Send response back to the JavaScript
         }
     }
     curl_close($curl);
+}
 
 ?>
 
@@ -511,7 +512,7 @@ function showContact(buttonElement) {
     const phoneNumber = prompt("Please enter your M-Pesa number:");
 
     if (phoneNumber) {
-        fetch('https://blooming-badlands-84005-a8db784487d5.herokuapp.com/lipaNaMpesa.php', {
+        fetch('https://blooming-badlands-84005-a8db784487d5.herokuapp.com/Index4.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
