@@ -23,7 +23,7 @@ if(isset($_POST['submit'])){
   $BusinessShortCode = '174379';
   $Passkey = 'bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919';  
   
-  /*
+  
   
    $PartyA = $_POST['phone']; // This is your phone number, 
   $AccountReference = 'Foreman Services';
