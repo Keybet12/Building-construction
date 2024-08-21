@@ -94,7 +94,7 @@
                 </div>
              
                 <div class="col-12">
-                  <button type="submit" onclick="dispcont()" class="btn btn-success" name="submit" value="submit" style= "background: rgb(9, 37, 82);">Pay</button>
+                  <button type="submit" class="btn btn-success" name="submit" value="submit" style= "background: rgb(9, 37, 82);">Pay</button>
                 </div>
               </form>
               <!--bs5 input-->
@@ -106,14 +106,7 @@
      type="text/javascript"
       src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"
 
-         let cont = document.querySelector(".contact-info")
-         let Paybtn = document.querySelector(".paybtn")
         
-        function dispcont(){
-            cont.style.display = "block"
-             Paybtn.style.display = "transparent";
-            cont.style.marginLeft = "7px";
-        }
 
         
     ></script>
