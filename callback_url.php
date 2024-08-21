@@ -27,19 +27,30 @@
      $MpesaReceiptNumber = $callbackContent->Body->stkCallback->CallbackMetadata->Item[1]->value;
      $PhoneNumber = $callbackContent->Body->stkCallback->CallbackMetadata->Item[4]->value;
      $formatedPhone = str_replace("254", "0", $PhoneNumber);
+     error_log(print_r($callbackContent, true));
 
-    if($Resultcode == 0){
 
-        $conn = mysqli_connect("sql5.freesqldatabase.com", "sql5726945", "UIEGnP4mm3", "sql5726945");
- if($conn == false) {
-    die("Connection Error". mysqli_connect_error());
-  }
- else{
+   if($Resultcode == 0) {
+    $conn = mysqli_connect("sql5.freesqldatabase.com", "sql5726945", "UIEGnP4mm3", "sql5726945");
+    if($conn == false) {
+        die("Connection Error: " . mysqli_connect_error());
+    } else {
+        // Prepare the insert statement with proper column names and values
+        $stmt = $conn->prepare("INSERT INTO payment (CheckoutRequestID, ResultCode, amount, MpesaReceiptNumber, PhoneNumber) VALUES (?, ?, ?, ?, ?)");
+        $stmt->bind_param("sisss", $CheckoutRequestID, $Resultcode, $Amount, $MpesaReceiptNumber, $formatedPhone);
 
-        $insert = $conn->query("INSERT INTO payment(CheckoutRequestID, ResultCode, amount, MpesaReceiptNumber, PhoneNumber)");
-         $conn = null;
- }
+        if ($stmt->execute()) {
+            // Log success
+        } else {
+            // Log error
+            error_log("Database Insertion Error: " . $stmt->error);
+        }
+
+        $stmt->close();
+        $conn->close();
     }
+}
+
 
 echo $response;
 
