@@ -24,7 +24,7 @@ if ($result->num_rows > 0) {
         echo '<p><h3>Arrival Time: </h3>' . $row['arrival_time'] . '</p>';
         echo '<p><h3>Closing Time: </h3>' . $row['closing_time'] . '</p>';
         echo '<p><h3>Application Status: </h3> <span style="color: ' . $statusColor . '; font-weight: bold;"> ' . ucfirst($row['application_status']) . '</span></p>';
-        echo '<button class="contact-btn" onclick=""><a class="paybtn" href="payment.php"><span>Pay To Show Contact</span></a></button>';
+        echo '<a class="paybtn" href="payment.php"><button class="contact-btn" onclick=""><span>Pay To Show Contact</span></button></a>';
         echo '<p class="contact-info" style="display: none;"><i class="fas fa-phone-alt"></i> : ' . $row['contact'] . '</p>';
         echo '</div>';
     }
