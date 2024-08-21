@@ -1,5 +1,15 @@
 
 <?php
+
+include('connectionForeman.php');
+ 
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+session_start();
+
+$username = isset($_SESSION['username']) ? $_SESSION['username'] : 'Guest';
+
 if(isset($_POST['submit'])){
 
 
