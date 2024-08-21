@@ -64,22 +64,37 @@ if (isset($_POST['submit'])) {
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($curl, CURLOPT_POST, true);
     curl_setopt($curl, CURLOPT_POSTFIELDS, $data_string);
-    $curl_response = curl_exec($curl);
 
-    if (curl_errno($curl)) {
-        $error_message = 'Curl error: ' . curl_error($curl);
-        echo json_encode(array('error' => $error_message));
+    
+    // Debug: Log the request to M-Pesa
+$logFile = "M_PESADebug.txt";
+$log = fopen($logFile, "a");
+fwrite($log, "Request to M-Pesa: " . $data_string . "\n");
+
+// Execute the cURL request
+$curl_response = curl_exec($curl);
+
+// Check for cURL errors
+if (curl_errno($curl)) {
+    $error_message = 'Curl error: ' . curl_error($curl);
+    fwrite($log, "Curl Error: " . $error_message . "\n");
+    echo json_encode(array('error' => $error_message));
+} else {
+    $http_status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+    fwrite($log, "HTTP Status: " . $http_status . "\n");
+    fwrite($log, "M-Pesa Response: " . $curl_response . "\n");
+
+    if ($http_status != 200) {
+        $error_message = 'HTTP error: ' . $http_status;
+        echo json_encode(array('error' => $error_message, 'response' => $curl_response));
     } else {
-        $http_status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-        if ($http_status != 200) {
-            $error_message = 'HTTP error: ' . $http_status;
-            echo json_encode(array('error' => $error_message, 'response' => $curl_response));
-        } else {
-            echo $curl_response; // Send response back to the JavaScript
-        }
+        echo $curl_response;
     }
-    curl_close($curl);
 }
+
+fclose($log);
+curl_close($curl);
+
 
 ?>
 
@@ -512,39 +527,37 @@ function showContact(buttonElement) {
     const phoneNumber = prompt("Please enter your M-Pesa number:");
 
     if (phoneNumber) {
-        fetch('https://blooming-badlands-84005-a8db784487d5.herokuapp.com/Index4.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            body: new URLSearchParams({
-                'phone': phoneNumber,
-                'submit': 'Submit' // To ensure the PHP script runs the desired logic
-            })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.error) {
-                alert("Error: " + data.error);
-                if (data.response) {
-                    console.log("Full response:", data.response);
-                }
-            } else if (data.Body && data.Body.stkCallback && data.Body.stkCallback.ResultCode === 0) {
-                alert("Payment successful! Displaying contact information.");
-                const contactInfoElement = buttonElement.nextElementSibling;
-                contactInfoElement.style.display = 'block'; // Show the contact info
-            } else if (data.Body && data.Body.stkCallback) {
-                alert("Payment failed: " + data.Body.stkCallback.ResultDesc);
-            } else {
-                alert("Unexpected response format: " + JSON.stringify(data));
-            }
-        })
-        .catch(error => {
-            console.error('Fetch error:', error);
-            alert("An error occurred. Please try again.");
-        });
+fetch('https://blooming-badlands-84005-a8db784487d5.herokuapp.com/path-to-index4.php', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    body: new URLSearchParams({
+        'phone': phoneNumber,
+        'submit': 'Submit'
+    })
+})
+.then(response => response.json())
+.then(data => {
+    if (data.error) {
+        alert("Error: " + data.error);
+        if (data.response) {
+            console.log("Full response:", data.response);
+        }
+    } else if (data.Body && data.Body.stkCallback && data.Body.stkCallback.ResultCode === 0) {
+        alert("Payment successful! Displaying contact information.");
+        const contactInfoElement = buttonElement.nextElementSibling;
+        contactInfoElement.style.display = 'block'; // Show the contact info
+    } else if (data.Body && data.Body.stkCallback) {
+        alert("Payment failed: " + data.Body.stkCallback.ResultDesc);
+    } else {
+        alert("Unexpected response format: " + JSON.stringify(data));
     }
-}
+})
+.catch(error => {
+    console.error('Fetch error:', error);
+    alert("An error occurred. Please try again.");
+});
 
 
     </script>
