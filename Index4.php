@@ -499,7 +499,14 @@ button {
 
 <script>
 
+let cont = document.querySelector('.contact-info')
+ let paybtn = document.querySelector('.contact-info')
+ 
+function contactrev(){
+     cont.display = 'block';
+}
 
+ 
 function preventBack(){window.history.forward()}
        setTimeout("preventBack()", 0)
     window.onunload = function(){null}
