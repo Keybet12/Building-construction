@@ -25,7 +25,7 @@ if (isset($_POST['submit'])) {
     $initiate_url = 'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest';
 
     # Callback URL
-    $CallBackURL = 'https://blooming-badlands-84005-a8db784487d5.herokuapp.com/callback_url.php';  
+    $CallBackURL = 'https://immense-lowlands-22897-966ba996a796.herokuapp.com/callback_url.php';  
 
     # Get the access token
     $curl = curl_init($access_token_url);
@@ -527,7 +527,7 @@ function showContact(buttonElement) {
     const phoneNumber = prompt("Please enter your M-Pesa number:");
 
     if (phoneNumber) {
-fetch('https://blooming-badlands-84005-a8db784487d5.herokuapp.com/path-to-index4.php', {
+fetch('https://immense-lowlands-22897-966ba996a796.herokuapp.com/path-to-index4.php', {
     method: 'POST',
     headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
