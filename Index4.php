@@ -500,10 +500,11 @@ button {
 <script>
 
 let cont = document.querySelector('.contact-info')
- let paybtn = document.querySelector('.contact-info')
+ let Paybtn = document.querySelector('.paybtn')
  
 function contactrev(){
-     cont.display = 'block';
+     cont.display = "block";
+     Paybtn.display = "none";
 }
 
  
