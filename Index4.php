@@ -1,104 +1,93 @@
 
 <?php
+if(isset($_POST['submit'])){
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
 
-if (isset($_POST['submit'])) {
-    date_default_timezone_set('Africa/Nairobi');
+  date_default_timezone_set('Africa/Nairobi');
 
-    # Access token details
-    $consumerKey = 'cCBLUhWdLDqaGqtrZmtM2XLCo1O8KtqiNu3EJJBzQRtAzgoZ'; // Fill with your app Consumer Key
-    $consumerSecret = 'JH93cv4kUyGaxwxU5U1NMngG4kATFCklVtLba4ZVAKOSkDr6clOxztpvGSEkZ5yC'; // Fill with your app Secret
+  # access token
+  $consumerKey = 'cCBLUhWdLDqaGqtrZmtM2XLCo1O8KtqiNu3EJJBzQRtAzgoZ'; //Fill with your app Consumer Key
+  $consumerSecret = 'JH93cv4kUyGaxwxU5U1NMngG4kATFCklVtLba4ZVAKOSkDr6clOxztpvGSEkZ5yC'; // Fill with your app Secret
 
-    # Define variables
-    $BusinessShortCode = '4629242';
-    $Passkey = 'bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919';  
-    $PartyA = $_POST['phone']; // This is the phone number entered by the user
-    $AccountReference = 'Foreman Services';
-    $TransactionDesc = 'Payment X';
-    $Amount = '50';
-    $Timestamp = date('YmdHis');    
-    $Password = base64_encode($BusinessShortCode.$Passkey.$Timestamp);
+  # define the variales
+  # provide the following details, this part is found on your test credentials on the developer account
+  $BusinessShortCode = '4629242';
+  $Passkey = 'bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919';  
+  
+  /*
+    This are your info, for
+    $PartyA should be the ACTUAL clients phone number or your phone number, format 2547********
+    $AccountRefference, it maybe invoice number, account number etc on production systems, but for test just put anything
+    TransactionDesc can be anything, probably a better description of or the transaction
+    $Amount this is the total invoiced amount, Any amount here will be 
+    actually deducted from a clients side/your test phone number once the PIN has been entered to authorize the transaction. 
+    for developer/test accounts, this money will be reversed automatically by midnight.
+  */
+  
+   $PartyA = $_POST['phone']; // This is your phone number, 
+  $AccountReference = 'Foreman Services';
+  $TransactionDesc = 'Test Payment';
+  $Amount = 50;
+ 
+  # Get the timestamp, format YYYYmmddhms -> 20181004151020
+  $Timestamp = date('YmdHis');    
+  
+  # Get the base64 encoded string -> $password. The passkey is the M-PESA Public Key
+  $Password = base64_encode($BusinessShortCode.$Passkey.$Timestamp);
 
-    # Headers for access token
-    $headers = ['Content-Type:application/json; charset=utf8'];
+  # header for access token
+  $headers = ['Content-Type:application/json; charset=utf8'];
 
-    # M-PESA endpoint URLs
-    $access_token_url = 'https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials';
-    $initiate_url = 'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest';
+    # M-PESA endpoint urls
+  $access_token_url = 'https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials';
+  $initiate_url = 'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest';
 
-    # Callback URL
-    $CallBackURL = 'https://immense-lowlands-22897-966ba996a796.herokuapp.com/callback_url.php';  
+  # callback url
+  $CallBackURL = 'https://immense-lowlands-22897-966ba996a796.herokuapp.com/callback_url.php';  
 
-    # Get the access token
-    $curl = curl_init($access_token_url);
-    curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
-    curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
-    curl_setopt($curl, CURLOPT_HEADER, FALSE);
-    curl_setopt($curl, CURLOPT_USERPWD, $consumerKey.':'.$consumerSecret);
-    $result = curl_exec($curl);
-    $result = json_decode($result);
-    $access_token = $result->access_token;  
-    curl_close($curl);
+  $curl = curl_init($access_token_url);
+  curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+  curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
+  curl_setopt($curl, CURLOPT_HEADER, FALSE);
+  curl_setopt($curl, CURLOPT_USERPWD, $consumerKey.':'.$consumerSecret);
+  $result = curl_exec($curl);
+  $status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+  $result = json_decode($result);
+  $access_token = $result->access_token;  
+  curl_close($curl);
 
-    # Header for STK push
-    $stkheader = ['Content-Type:application/json','Authorization:Bearer '.$access_token];
+  # header for stk push
+  $stkheader = ['Content-Type:application/json','Authorization:Bearer '.$access_token];
 
-    # Initiating the transaction
-    $curl = curl_init();
-    curl_setopt($curl, CURLOPT_URL, $initiate_url);
-    curl_setopt($curl, CURLOPT_HTTPHEADER, $stkheader); // Setting custom header
+  # initiating the transaction
+  $curl = curl_init();
+  curl_setopt($curl, CURLOPT_URL, $initiate_url);
+  curl_setopt($curl, CURLOPT_HTTPHEADER, $stkheader); //setting custom header
 
-    $curl_post_data = array(
-        'BusinessShortCode' => $BusinessShortCode,
-        'Password' => $Password,
-        'Timestamp' => $Timestamp,
-        'TransactionType' => 'CustomerPayBillOnline',
-        'Amount' => $Amount,
-        'PartyA' => $PartyA,
-        'PartyB' => $BusinessShortCode,
-        'PhoneNumber' => $PartyA,
-        'CallBackURL' => $CallBackURL,
-        'AccountReference' => $AccountReference,
-        'TransactionDesc' => $TransactionDesc
-    );
+  $curl_post_data = array(
+    //Fill in the request parameters with valid values
+    'BusinessShortCode' => $BusinessShortCode,
+    'Password' => $Password,
+    'Timestamp' => $Timestamp,
+    'TransactionType' => 'CustomerPayBillOnline',
+    'Amount' => $Amount,
+    'PartyA' => $PartyA,
+    'PartyB' => $BusinessShortCode,
+    'PhoneNumber' => $PartyA,
+    'CallBackURL' => $CallBackURL,
+    'AccountReference' => $AccountReference,
+    'TransactionDesc' => $TransactionDesc
+  );
 
-    $data_string = json_encode($curl_post_data);
-    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($curl, CURLOPT_POST, true);
-    curl_setopt($curl, CURLOPT_POSTFIELDS, $data_string);
+  $data_string = json_encode($curl_post_data);
+  curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+  curl_setopt($curl, CURLOPT_POST, true);
+  curl_setopt($curl, CURLOPT_POSTFIELDS, $data_string);
+  $curl_response = curl_exec($curl);
+  print_r($curl_response);
 
-    
-    // Debug: Log the request to M-Pesa
-$logFile = "M_PESADebug.txt";
-$log = fopen($logFile, "a");
-fwrite($log, "Request to M-Pesa: " . $data_string . "\n");
-
-// Execute the cURL request
-$curl_response = curl_exec($curl);
-
-// Check for cURL errors
-if (curl_errno($curl)) {
-    $error_message = 'Curl error: ' . curl_error($curl);
-    fwrite($log, "Curl Error: " . $error_message . "\n");
-    echo json_encode(array('error' => $error_message));
-} else {
-    $http_status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-    fwrite($log, "HTTP Status: " . $http_status . "\n");
-    fwrite($log, "M-Pesa Response: " . $curl_response . "\n");
-
-    if ($http_status != 200) {
-        $error_message = 'HTTP error: ' . $http_status;
-        echo json_encode(array('error' => $error_message, 'response' => $curl_response));
-    } else {
-        echo $curl_response;
-    }
-}
-
-fclose($log);
-curl_close($curl);
+  echo $curl_response;
+};
 
 
 ?>
@@ -526,43 +515,7 @@ document.querySelector('.toggle-btn').addEventListener('click', function() {
     
 });
 
-
-function showContact(buttonElement) {
-    const phoneNumber = prompt("Please enter your M-Pesa number:");
-
-    if (phoneNumber) {
-fetch('https://immense-lowlands-22897-966ba996a796.herokuapp.com/path-to-index4.php', {
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-    },
-    body: new URLSearchParams({
-        'phone': phoneNumber,
-        'submit': 'Submit'
-    })
-})
-.then(response => response.json())
-.then(data => {
-    if (data.error) {
-        alert("Error: " + data.error);
-        if (data.response) {
-            console.log("Full response:", data.response);
-        }
-    } else if (data.Body && data.Body.stkCallback && data.Body.stkCallback.ResultCode === 0) {
-        alert("Payment successful! Displaying contact information.");
-        const contactInfoElement = buttonElement.nextElementSibling;
-        contactInfoElement.style.display = 'block'; // Show the contact info
-    } else if (data.Body && data.Body.stkCallback) {
-        alert("Payment failed: " + data.Body.stkCallback.ResultDesc);
-    } else {
-        alert("Unexpected response format: " + JSON.stringify(data));
-    }
-})
-.catch(error => {
-    console.error('Fetch error:', error);
-    alert("An error occurred. Please try again.");
-});
-
+ 
 
     </script>
 
