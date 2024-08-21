@@ -358,6 +358,8 @@ button {
         button span {
             position: relative;
             z-index: 1;
+            font-size: 16px;
+            color: white;
         }
      
         .message{
@@ -372,6 +374,11 @@ button {
             margin-top:10%;
             font-size: 200px;
             color: rgb(9, 37, 82);
+        }
+        .paybtn{
+            text-decoration: none;
+            color: white;
+            
         }
      
  </style>
