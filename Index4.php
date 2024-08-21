@@ -1,6 +1,5 @@
 
 <?php
-if (isset($_POST['submit'])) {
     date_default_timezone_set('Africa/Nairobi');
 
     # Access token details
@@ -80,7 +79,7 @@ if (isset($_POST['submit'])) {
         }
     }
     curl_close($curl);
-}
+
 ?>
 
 
@@ -512,7 +511,7 @@ function showContact(buttonElement) {
     const phoneNumber = prompt("Please enter your M-Pesa number:");
 
     if (phoneNumber) {
-        fetch('Index4.php', {
+        fetch('https://blooming-badlands-84005-a8db784487d5.herokuapp.com/lipaNaMpesa.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
