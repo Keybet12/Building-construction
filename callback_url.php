@@ -52,7 +52,6 @@
 }
 
 
-echo $response;
 
 
 
