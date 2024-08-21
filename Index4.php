@@ -503,8 +503,8 @@ let cont = document.querySelector('.contact-info')
  let Paybtn = document.querySelector('.paybtn')
  
 function contactrev(){
-     cont.display = "block";
-     Paybtn.display = "none";
+     cont.style.display = "block";
+     Paybtn.style.display = "none";
 }
 
  
