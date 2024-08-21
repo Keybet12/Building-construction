@@ -537,7 +537,7 @@ document.querySelector('.toggle-btn').addEventListener('click', function() {
         localStorage.setItem('pageLoadCount', loadCount);
 
         // Check if the page has been loaded at least twice
-        if (loadCount >= 2) {
+        if (loadCount >= 3) {
             // Display the button
             document.querySelector('.contact-info').style.display = 'block';
             document.querySelector('.contact-info').style.marginLeft = '7px';
