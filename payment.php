@@ -74,9 +74,9 @@
     <div class="container d-flex justify-content-center">
       <div class="card mt-5 px-3 py-4">
         <div class="d-flex flex-row justify-content-around">
-          <div class="mpesa"><span>Mpesa </span></div>
-          <div><span>Paypal</span></div>
-          <div><span>Card</span></div>
+          <div class="mpesa"><span style= "background: rgb(9, 37, 82);">Mpesa </span></div>
+          <div><span style= "background: rgb(9, 37, 82);">Paypal</span></div>
+          <div><span style= "background: rgb(9, 37, 82);">Card</span></div>
         </div>
         <div class="media mt-4 pl-2">
           <img src="1200px-M-PESA_LOGO-01.svg.png" class="mr-3" height="75" />
@@ -94,7 +94,7 @@
                 </div>
              
                 <div class="col-12">
-                  <button type="submit" class="btn btn-success" name="submit" value="submit" style= "background: navy;">Pay</button>
+                  <button type="submit" class="btn btn-success" name="submit" value="submit" style= "background: rgb(9, 37, 82);">Pay</button>
                 </div>
               </form>
               <!--bs5 input-->
