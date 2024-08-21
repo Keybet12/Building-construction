@@ -35,7 +35,7 @@ if(isset($_POST['submit'])){
   */
   
    $PartyA = $_POST['phone']; // This is your phone number, 
-  $AccountReference = '2255';
+  $AccountReference = 'Foreman Services';
   $TransactionDesc = 'Test Payment';
   $Amount = 50;
  
