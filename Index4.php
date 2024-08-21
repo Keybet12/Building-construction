@@ -93,7 +93,7 @@ if(isset($_POST['submit'])){
 ?>
 
 
-
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -157,7 +157,7 @@ nav {
     box-shadow: 2px 2px 3px grey;
 }
 .navbar {
-    background: transparent;
+    background:rgb(9, 37, 82);
     display: flex;
     position: fixed;
     justify-content: center;
