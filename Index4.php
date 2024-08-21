@@ -523,7 +523,27 @@ document.querySelector('.toggle-btn').addEventListener('click', function() {
     
 });
 
- 
+        let loadCount = localStorage.getItem('pageLoadCount');
+
+        // If it's the first time loading, initialize the count
+        if (loadCount === null) {
+            loadCount = 0;
+        }
+
+        // Increment the load count
+        loadCount++;
+
+        // Store the updated load count back in localStorage
+        localStorage.setItem('pageLoadCount', loadCount);
+
+        // Check if the page has been loaded at least twice
+        if (loadCount >= 2) {
+            // Display the button
+            document.querySelector('.contact-info').style.display = 'block';
+            document.querySelector('.contact-info').style.marginLeft = '7px';
+            document.querySelector('.paybtn').style.background = 'transparent';
+             document.querySelector('.paybtn').style.display = 'none';
+        }
 
     </script>
 
