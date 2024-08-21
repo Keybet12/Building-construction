@@ -60,3 +60,28 @@ ini_set('display_errors', 1);
 
 
 ?>
+    <html>
+       <head>
+        <style>
+            .paybtn{
+                 display: none;
+             
+            }
+             .contact-info{
+                  display: block;
+             }
+         
+         </style>
+       </head>
+     <body>
+     </body>
+    </html>
+
+
+
+
+
+
+
+     
+    </html>
