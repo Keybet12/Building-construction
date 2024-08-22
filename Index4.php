@@ -527,7 +527,7 @@ document.querySelector('.toggle-btn').addEventListener('click', function() {
         setTimeout(function(){
            
             window.location.href = 'Index4_.php';
-        }, 4000);
+        }, 10000);
     </script>
 
 </body>
