@@ -526,7 +526,7 @@ window.onscroll = function() {
         setTimeout(function(){
            
             window.location.href = 'Index4_.php';
-        }, 10000);
+        }, 12000);
     </script>
 
 </body>
