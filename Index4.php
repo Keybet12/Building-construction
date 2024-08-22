@@ -523,12 +523,11 @@ document.querySelector('.toggle-btn').addEventListener('click', function() {
     
 });
 
-   <script type="text/javascript">
-        // Use JavaScript to delay the redirection by 5 seconds (5000 milliseconds)
+      
         setTimeout(function(){
-            // Replace 'yourpage.php' with the URL of the page you want to display
+           
             window.location.href = 'Index4_.php';
-        }, 7000);
+        }, 4000);
     </script>
 
 </body>
