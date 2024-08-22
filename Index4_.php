@@ -416,7 +416,6 @@ document.querySelector('.toggle-btn').addEventListener('click', function() {
     
 });
 
-alert('Payment Success!')
     
 
     </script>
