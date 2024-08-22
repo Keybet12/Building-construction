@@ -505,7 +505,12 @@ function preventBack(){window.history.forward()}
        setTimeout("preventBack()", 0)
     window.onunload = function(){null}
 
-
+document.querySelector('.toggle-btn').addEventListener('click', function() {
+    const menu = document.querySelector('.menu');
+    menu.classList.toggle('open');
+    
+});
+ 
 window.onscroll = function() {
     var navbar = document.querySelector(".navbar");
     if (window.scrollY > 20) {
@@ -516,12 +521,6 @@ window.onscroll = function() {
         
     }
 }
-
-document.querySelector('.toggle-btn').addEventListener('click', function() {
-    const menu = document.querySelector('.menu');
-    menu.classList.toggle('open');
-    
-});
 
       
         setTimeout(function(){
